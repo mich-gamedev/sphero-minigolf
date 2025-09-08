@@ -1,39 +1,48 @@
-state = "waiting_turn"
+import time
+from spherov2 import scanner
+from spherov2.sphero_edu import SpheroEduAPI
+from spherov2.types import Color
+from enum import Enum
 
-colors = [0, 64, 128, 128 + 64, 255]
-rotate_speed = 90
+toy = scanner.find_toy()
 
-async def start_program():
-    # Write code here
-    return
+#region const settings
+FORCE_LIGHT_RANGE = {"min": 0, "max": 255}
+FORCE_SPEED_RANGE = {"min": 0, "max": 255}
 
-def set_state(s):
-    state = s
-    if s == "waiting_turn":
-        wait_turn()
-    elif s == "rotate":
-        rotate()
+ROTATE_SPEED      = 180.
+
+BOUNCE_DECAY      = .9
+
+DECEL             = 255./8.
+
+TICK_DELTA        = 1./20.
+#endregion
+
+class States(Enum):
+    IDLE         = 0
+    CHOOSE_ROT   = 1
+    CHOOSE_SPEED = 2
+    MOVE         = 3
+
+state = States.IDLE
+
+
+with SpheroEduAPI(toy) as bot:
+    def set_state(s):
+        state = s
+        if s == States.IDLE:
+            return
+        elif s == States.CHOOSE_ROT:
+            
     
+    async def rotate():
+        while state == States.CHOOSE_ROT:
+            await bot.spin(ROTATE_SPEED*TICK_DELTA, TICK_DELTA)
+
     
-
-async def wait_turn():
-    idx = 0
-    while state != "waiting_turn":
-        idx += 1
-        if idx == colors.length:
-            idx = 0
-        set_back_led(colors[idx])
-        await delay(.2)
-
-async def rotate():
-    while state != "rotate":
-        await spin(rotate_speed, 1.)
-
-
-
-
-async def on_collision():
-    if state == "waiting_turn":
-        set_state("rotate")
-    elif state == "rotate":
-        set_state("move")
+    def on_collision(api):
+        if state == States.CHOOSE_ROT:
+            set_state(States.CHOOSE_SPEED)
+        if state == States.CHOOSE_SPEED:
+            set_state(States.MOVE)
