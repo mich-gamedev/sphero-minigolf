@@ -6,6 +6,8 @@ from spherov2.sphero_edu import SpheroEduAPI
 from spherov2.types import Color
 from enum import Enum
 
+# TODO: make this 1 program be able to control multiple spheros at once
+
 toy = scanner.find_Mini()
 #region const settings
 
