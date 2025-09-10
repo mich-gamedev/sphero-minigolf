@@ -1,3 +1,16 @@
+
+#region USER SETTINGS
+TOY_NAME     = ""
+
+ROTATE_SPEED = 180.
+BOUNCE_DECAY = .9
+DECEL        = 255./8.
+TICK_DELTA   = 1./20.
+#endregion
+
+
+# ---- CODE BELOW ---- #
+
 import time
 import math
 import asyncio
@@ -6,22 +19,8 @@ from spherov2.sphero_edu import SpheroEduAPI
 from spherov2.types import Color
 from enum import Enum
 
-# TODO: make this 1 program be able to control multiple spheros at once
-
-toy = scanner.find_Mini()
-#region const settings
-
-FORCE_LIGHT_RANGE = {"min": 0, "max": 255}
-FORCE_SPEED_RANGE = {"min": 0, "max": 255}
-
-ROTATE_SPEED      = 180.
-
-BOUNCE_DECAY      = .9
-
-DECEL             = 255./8.
-
-TICK_DELTA        = 1./20.
-#endregion
+# TODO: make this 1 program be able to control multiple spheros at once, ideally
+toy = scanner.find_Mini(toy_name=(TOY_NAME if TOY_NAME else None))
 
 class States(Enum):
     IDLE         = 0
