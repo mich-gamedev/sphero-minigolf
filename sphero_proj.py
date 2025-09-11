@@ -10,13 +10,10 @@ TICK_DELTA   = 1./20.
 
 
 # ---- CODE BELOW ---- #
-
-import time
 import math
 import asyncio
 from spherov2 import scanner
 from spherov2.sphero_edu import SpheroEduAPI
-from spherov2.types import Color
 from enum import Enum
 
 # TODO: make this 1 program be able to control multiple spheros at once, ideally
