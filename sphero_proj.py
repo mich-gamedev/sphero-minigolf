@@ -29,7 +29,6 @@ class States(Enum):
     MOVE         = 3
 
 with SpheroEduAPI(toy) as bot:
-
     state = States.IDLE
 
     def set_state(s: int):
@@ -68,6 +67,8 @@ with SpheroEduAPI(toy) as bot:
                 set_state(States.CHOOSE_ROT)
 
     def on_collision(api):
+        if state == States.IDLE:
+            set_state(States.CHOOSE_ROT)
         if state == States.CHOOSE_ROT:
             set_state(States.CHOOSE_SPEED)
         if state == States.CHOOSE_SPEED:
