@@ -1,12 +1,24 @@
 
 #region USER SETTINGS
-TOY_NAME     = ""
-
-ROTATE_SPEED = 180.
+# !IMPORTANT! Set the ID/name inside the mini "SM-####". set to None to connect to the first found.
+TOY_NAME     = None
+# How fast it rotates per second.
+ROTATE_SPEED = 720.
+# How much speed it loses when running into a wall. (CURRENTLY UNUSED)
 BOUNCE_DECAY = .9
+# How much it slows down per second
 DECEL        = 255./8.
+# How many seconds between each update.
 TICK_DELTA   = 1./20.
 #endregion
+
+
+
+
+
+
+
+
 
 
 # ---- CODE BELOW ---- #
@@ -15,6 +27,7 @@ import asyncio
 from spherov2 import scanner
 from spherov2.sphero_edu import SpheroEduAPI
 from enum import Enum
+import keyboard
 
 # TODO: make this 1 program be able to control multiple spheros at once, ideally
 toy = scanner.find_Mini(toy_name=(TOY_NAME if TOY_NAME else None))
@@ -22,33 +35,47 @@ toy = scanner.find_Mini(toy_name=(TOY_NAME if TOY_NAME else None))
 class States(Enum):
     IDLE         = 0 # Before the game starts
     CHOOSE_ROT   = 1 # Slowly rotates, hit to choose rotation
-    CHOOSE_SPEED = 2 # Slow oscillates light, hit to choose speed
+    CHOOSE_SPEED = 2 # Slowly oscillates light, hit to choose speed
     MOVE         = 3 # Performs movement
 
-with SpheroEduAPI(toy) as bot:
-    state = States.IDLE
+state = States.CHOOSE_ROT
 
-    def set_state(s: int):
+with SpheroEduAPI(toy) as bot:
+
+
+    def set_state(s):
         state = s
+        print("new state:" + str(state))
         if s == States.IDLE:
             return
         elif s == States.CHOOSE_ROT:
-            rotate()
+            print("async running rotate")
+            asyncio.run(rotate())
         elif s == States.CHOOSE_SPEED:
-            choose_speed()
+            asyncio.run(choose_speed())
         elif s == States.MOVE:
-            move()
+            asyncio.run(move())
 
 #region STATE FUNCTIONS
     async def rotate():
         bot.set_back_led(255)
+        print("state == states.CHOOSE_ROT: " + str(state == States.CHOOSE_ROT))
+        print("current state: " + str(state))
         while state == States.CHOOSE_ROT:
-            await bot.spin(ROTATE_SPEED*TICK_DELTA, TICK_DELTA)
+            if keyboard.is_pressed('space'):
+                set_state(States.CHOOSE_SPEED)
+                break
+            print("Spinning")
+            bot.spin(ROTATE_SPEED*TICK_DELTA, TICK_DELTA)
+            await asyncio.sleep(TICK_DELTA)
 
     async def choose_speed():
         elapsed = 0.0
         power = 0.0
         while state == States.CHOOSE_SPEED:
+            if keyboard.is_pressed('enter'):
+                set_state(States.MOVE)
+                break
             power = math.cos(elapsed * math.pi / 2) * 255
             bot.set_back_led(power)
             elapsed += TICK_DELTA
@@ -64,14 +91,4 @@ with SpheroEduAPI(toy) as bot:
             if speed <= 0:
                 set_state(States.CHOOSE_ROT)
 #endregion
-#region API EVENTS
-    def on_collision(api):
-        if state == States.IDLE:
-            set_state(States.CHOOSE_ROT)
-        if state == States.CHOOSE_ROT:
-            set_state(States.CHOOSE_SPEED)
-        if state == States.CHOOSE_SPEED:
-            set_state(States.MOVE)
-        if state == States.MOVE:
-            bot.spin(180, 1)
-#endregion
+    set_state(States.CHOOSE_ROT)
