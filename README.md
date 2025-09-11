@@ -16,6 +16,11 @@
 > if `toyid` is not supplied, it'll use the first (usually closest) Sphero Mini found.
 - `python sphero_proj.py toyid=SM-####` (add -c to debug, replace `toyid` with your toy's ID)
 
+## How to play:
+1. Sphero will start spinning, press **space** to stop it and decide the angle.
+2. Sphero will start pulsing, press **enter** to decide the force of the hit and make it start moving.
+3. Wait your turn.
+
 ## Problems:
 - [ ] Sphero api has no collision normal exposed, so there's no option for proper "bouncing" off walls. Current fix is to just rotate it 180 degrees, may remove bouncing with more testing.
 - [ ] BleakAdapter does not disconnect if the program is terminated, so it can disable a toy until the computer is shut off.
