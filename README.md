@@ -12,6 +12,8 @@
 - `git clone https://github.com/mich-gamedev/sphero-minigolf.git` or `gh repo clone mich-gamedev/sphero-minigolf`
 
 ## How to run:
+> [!NOTE]
+> if `toyid` is not supplied, it'll use the first (usually closest) Sphero Mini found.
 - `python sphero_proj.py toyid=SM-####` (add -c to debug, replace `toyid` with your toy's ID)
 
 ## Problems:
