@@ -39,6 +39,7 @@ with SpheroEduAPI(toy) as bot:
         elif s == States.MOVE:
             move()
 
+#region STATE FUNCTIONS
     async def rotate():
         bot.set_back_led(255)
         while state == States.CHOOSE_ROT:
@@ -62,7 +63,8 @@ with SpheroEduAPI(toy) as bot:
             await asyncio.sleep(TICK_DELTA)
             if speed <= 0:
                 set_state(States.CHOOSE_ROT)
-
+#endregion
+#region API EVENTS
     def on_collision(api):
         if state == States.IDLE:
             set_state(States.CHOOSE_ROT)
@@ -72,3 +74,4 @@ with SpheroEduAPI(toy) as bot:
             set_state(States.MOVE)
         if state == States.MOVE:
             bot.spin(180, 1)
+#endregion
