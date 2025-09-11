@@ -23,10 +23,10 @@ from enum import Enum
 toy = scanner.find_Mini(toy_name=(TOY_NAME if TOY_NAME else None))
 
 class States(Enum):
-    IDLE         = 0
-    CHOOSE_ROT   = 1
-    CHOOSE_SPEED = 2
-    MOVE         = 3
+    IDLE         = 0 # Before the game starts
+    CHOOSE_ROT   = 1 # Slowly rotates, hit to choose rotation
+    CHOOSE_SPEED = 2 # Slow oscillates light, hit to choose speed
+    MOVE         = 3 # Performs movement
 
 with SpheroEduAPI(toy) as bot:
     state = States.IDLE
@@ -51,7 +51,7 @@ with SpheroEduAPI(toy) as bot:
         elapsed = 0.0
         power = 0.0
         while state == States.CHOOSE_SPEED:
-            power = math.sin(elapsed * math.pi / 2) * 255
+            power = math.cos(elapsed * math.pi / 2) * 255
             bot.set_back_led(power)
             elapsed += TICK_DELTA
             await asyncio.sleep(TICK_DELTA)
