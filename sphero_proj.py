@@ -1,7 +1,5 @@
 
 #region USER SETTINGS
-# !IMPORTANT! Set the ID/name inside the mini "SM-####". set to None to connect to the first found.
-TOY_NAME     = None
 # How fast it rotates per second.
 ROTATE_SPEED = 720.
 # How much speed it loses when running into a wall. (CURRENTLY UNUSED)
@@ -24,13 +22,19 @@ TICK_DELTA   = 1./20.
 # ---- CODE BELOW ---- #
 import math
 import asyncio
+import sys
 from spherov2 import scanner
 from spherov2.sphero_edu import SpheroEduAPI
 from enum import Enum
 import keyboard
 
-# TODO: make this 1 program be able to control multiple spheros at once, ideally
-toy = scanner.find_Mini(toy_name=(TOY_NAME if TOY_NAME else None))
+cli_args = sys.argv
+toy_name = ""
+for i in cli_args:
+    if i.startswith("toyid="):
+        toy_name = i.removeprefix("toyid=")
+
+toy = scanner.find_Mini(toy_name=(toy_name if toy_name else None))
 
 class States(Enum):
     IDLE         = 0 # Before the game starts
