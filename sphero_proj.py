@@ -1,4 +1,3 @@
-
 #region USER SETTINGS
 # How fast it rotates per second.
 ROTATE_SPEED = 720.
@@ -9,7 +8,6 @@ DECEL        = 255./8.
 # How many seconds between each update.
 TICK_DELTA   = 1./20.
 #endregion
-
 
 
 
@@ -43,47 +41,54 @@ class States(Enum):
     MOVE         = 3 # Performs movement
 
 state = States.CHOOSE_ROT
+last_runner = None
+
 
 with SpheroEduAPI(toy) as bot:
 
 
+
     def set_state(s):
+        global state
+        global last_runner
         state = s
-        print("new state:" + str(state))
+        try:
+            last_runner.close()
+            print("Closed running event loop.")
+        except NameError:
+            print("Couldn't find existing async loop. continuing")
+        last_runner = asyncio.Runner()
+
         if s == States.IDLE:
             return
         elif s == States.CHOOSE_ROT:
-            print("async running rotate")
-            asyncio.run(rotate())
+            last_runner.run(rotate())
         elif s == States.CHOOSE_SPEED:
-            asyncio.run(choose_speed())
+            last_runner.run(choose_speed())
         elif s == States.MOVE:
-            asyncio.run(move())
+            last_runner.run(move())
 
 #region STATE FUNCTIONS
     async def rotate():
         bot.set_back_led(255)
-        print("state == states.CHOOSE_ROT: " + str(state == States.CHOOSE_ROT))
-        print("current state: " + str(state))
         while state == States.CHOOSE_ROT:
+            await asyncio.sleep(TICK_DELTA)
             if keyboard.is_pressed('space'):
                 set_state(States.CHOOSE_SPEED)
                 break
-            print("Spinning")
             bot.spin(ROTATE_SPEED*TICK_DELTA, TICK_DELTA)
-            await asyncio.sleep(TICK_DELTA)
 
     async def choose_speed():
         elapsed = 0.0
         power = 0.0
         while state == States.CHOOSE_SPEED:
+            await asyncio.sleep(TICK_DELTA)
             if keyboard.is_pressed('enter'):
                 set_state(States.MOVE)
                 break
             power = math.cos(elapsed * math.pi / 2) * 255
             bot.set_back_led(power)
             elapsed += TICK_DELTA
-            await asyncio.sleep(TICK_DELTA)
     
     async def move():
         bot.set_back_led(0)
