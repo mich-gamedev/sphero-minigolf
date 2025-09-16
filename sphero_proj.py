@@ -53,10 +53,13 @@ with SpheroEduAPI(toy) as bot:
         global last_runner
         state = s
         try:
-            last_runner.close()
-            print("Closed running event loop.")
+            last_runner
         except NameError:
             print("Couldn't find existing async loop. continuing")
+        else:
+            if last_runner != None:
+                last_runner.close()
+        asyncio.create_task()
         last_runner = asyncio.Runner()
 
         if s == States.IDLE:
@@ -74,9 +77,9 @@ with SpheroEduAPI(toy) as bot:
         while state == States.CHOOSE_ROT:
             await asyncio.sleep(TICK_DELTA)
             if keyboard.is_pressed('space'):
-                set_state(States.CHOOSE_SPEED)
                 break
             bot.spin(ROTATE_SPEED*TICK_DELTA, TICK_DELTA)
+        set_state(States.CHOOSE_SPEED)
 
     async def choose_speed():
         elapsed = 0.0
