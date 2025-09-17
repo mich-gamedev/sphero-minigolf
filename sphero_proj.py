@@ -44,7 +44,7 @@ for i in cli_args:
     if i.startswith("toyid="):
         toy_name = i.removeprefix("toyid=")
     elif i.startswith("team="):
-        team = int(i.removeprefix("team="))
+        team = int(i.removeprefix("team=")) - 1
 
 toy = scanner.find_Mini(toy_name=(toy_name if toy_name else None))
 

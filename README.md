@@ -12,9 +12,17 @@
 - `git clone https://github.com/mich-gamedev/sphero-minigolf.git` or `gh repo clone mich-gamedev/sphero-minigolf`
 
 ## How to run:
-> [!NOTE]
-> if `toyid` is not supplied, it'll use the first (usually closest) Sphero Mini found.
-- `sudo python sphero_proj.py toyid=SM-####` (add -c to debug, replace `toyid` with your toy's ID)
+- `sudo python sphero_proj.py toyid=SM-#### team=#`
+    - add -c to debug
+    - replace `toyid=SM-####` with your toy'd ID / name
+    - replace `team=#` with a number from 1-6, representing your team's color
+        - 1 = `#ff0000`
+        - 2 = `#ffff00`
+        - 3 = `#00ff00`
+        - 3 = `#00ffff`
+        - 4 = `#0000ff`
+        - 5 = `#ff00ff`
+
 
 ## How to play:
 1. Sphero will start spinning, press **space** to stop it and decide the angle.
