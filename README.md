@@ -26,10 +26,10 @@
 
 
 ## How to play:
-1. Sphero will start spinning, press **space** to stop it and decide the angle.
-2. Sphero will start pulsing, press **enter** to decide the force of the hit and make it start moving.
+1. Sphero will start spinning, press `space` to stop it and decide the angle.
+2. Sphero will start pulsing, press `enter` to decide the force of the hit and make it start moving.
 3. Wait your turn.
 
 ## Problems:
-- [ ] Sphero api has no collision normal exposed, so there's no option for proper "bouncing" off walls. Current fix is to just rotate it 180 degrees, may remove bouncing with more testing.
-- [ ] BleakAdapter does not disconnect if the program is terminated, so it can disable a toy until the computer is shut off.
+- [x] Sphero api has no collision normal exposed, so there's no option for proper "bouncing" off walls. Decided to remove bouncing.
+- [x] BleakAdapter does not disconnect if the program is terminated, so it can disable a toy until the computer is shut off. Added an exit flag via pressing `esc` to fix this.
