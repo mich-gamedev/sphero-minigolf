@@ -16,12 +16,12 @@
     - add -c to debug
     - replace `toyid=SM-####` with your toy'd ID / name
     - replace `team=#` with a number from 1-6, representing your team's color
-        - 1 = `#ff0000`
-        - 2 = `#ffff00`
-        - 3 = `#00ff00`
-        - 3 = `#00ffff`
-        - 4 = `#0000ff`
-        - 5 = `#ff00ff`
+        - 1 = `#ff0000` :aries:
+        - 2 = `#ffff00` :leo:
+        - 3 = `#00ff00` :libra:
+        - 4 = `#00ffff` :ophiuchus:
+        - 5 = `#0000ff` :sagittarius:
+        - 6 = `#ff00ff` :pisces:
 
 
 ## How to play:
