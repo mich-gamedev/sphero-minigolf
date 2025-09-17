@@ -15,8 +15,9 @@
 - `sudo python sphero_proj.py toyid=SM-#### team=#`
     - add -c to debug
     - replace `toyid=SM-####` with your toy'd ID / name
+        - if empty, connects to first one found (usually the closest)
     - replace `team=#` with a number from 1-6, representing your team's color
-        - 1 = `#ff0000` :aries:
+        - 1 = `#ff0000` :aries: (default)
         - 2 = `#ffff00` :leo:
         - 3 = `#00ff00` :libra:
         - 4 = `#00ffff` :ophiuchus:
