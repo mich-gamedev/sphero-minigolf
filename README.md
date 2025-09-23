@@ -2,6 +2,8 @@
 ![idea.png](https://github.com/mich-gamedev/sphero-minigolf/blob/main/idea.png?raw=true)
 
 ## How to install:
+> [!NOTE]
+> On windows 10, remove `sudo` from commands and instead run your CLI with admin permissions.
 ### Prerequesites
 - Python (>v3.7)
 - Git
